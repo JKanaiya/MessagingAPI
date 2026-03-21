@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_ENV=test vitest",
+    "dev": "NODE_ENV=development tsx app.ts",
+    "dbdev": "NODE_ENV=development tsx --inspect app.ts"
   },
   "keywords": [],
   "author": "",
@@ -12,7 +14,8 @@
   "type": "module",
   "dependencies": {
     "@prisma/adapter-pg": "^7.2.0",
-    "@prisma/client": "^7.2.0",
+    "@prisma/client": "^7.3.0",
+    "bcrypt-ts": "^8.0.0",
     "bcryptjs": "^3.0.3",
     "body-parser": "^2.2.1",
     "cors": "^2.8.5",
@@ -26,12 +29,28 @@
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
-    "pg": "^8.16.3"
+    "pg": "^8.16.3",
+    "prisma": "^7.2.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/jest": "^30.0.0",
     "@types/node": "^25.0.3",
     "@types/pg": "^8.16.0",
-    "prisma": "^7.2.0"
-  }
+    "@types/supertest": "^6.0.3",
+    "jest": "^30.2.0",
+    "supertest": "^7.1.4",
+    "ts-jest": "^29.4.6",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.16"
+  },
+"overrides": {
+  "hono": "^4.12.7",
+  "@hono/node-server": "^1.19.10",
+  "lodash": "^4.17.21",
+  "effect": "^3.20.0"
+}
 }

@@ -36,7 +36,7 @@
         prisma_7
         openssl_3
         prisma-engines_7
-        # prisma-language-server
+        prisma-language-server
       ];
       shellHook = ''
           exec zsh

@@ -2,21 +2,28 @@
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
-    // "rootDir": "./src",
-    // "outDir": "./dist",
+    "rootDir": ".",
+    "resolveJsonModule": true,
+    "outDir": "./dist",
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "ESNext",
-    "target": "ES2023",
+    "module": "NodeNext",
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "NodeNext",
+    "allowImportingTsExtensions": true,
+    // "rewriteRelativeImportExtensions": true,
+    "target": "ESNext",
     "types": [],
     // For nodejs:
-    // "lib": ["esnext"],
+    "lib": [
+      "ESNext"
+    ],
     // "types": ["node"],
     // and npm install -D @types/node
     // Other Outputs
     "sourceMap": true,
     "declaration": true,
-    "moduleResolution": "node",
+    // "moduleResolution": "node",
     "declarationMap": true,
     // from prisma startup
     "esModuleInterop": true,
@@ -39,6 +46,6 @@
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
-    "skipLibCheck": true,
+    "skipLibCheck": true
   }
 }
