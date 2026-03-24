@@ -1,5 +1,6 @@
 import { type Request, type Response } from "express";
 import { prisma } from "./prisma.ts";
+import { log } from "console";
 
 const sendMessage = async (req: Request, res: Response) => {
   const { text, chatroomId } = req.body;
@@ -11,13 +12,14 @@ const sendMessage = async (req: Request, res: Response) => {
       data: {
         userId: res.locals.user.id,
         timeSent: now.toLocaleDateString(),
-        chatroomId,
-        text
+        chatroomId: chatroomId,
+        text: text
       }
     })
     res.status(200).json("Message was sent")
   } catch (e) {
-    res.status(400).json("Message could not be sent")
+    log(e)
+    res.status(400).json(e)
   }
 }
 
