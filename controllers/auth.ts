@@ -1,16 +1,15 @@
 import jwt from "jsonwebtoken";
-import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt"
+import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
 import { body, validationResult } from "express-validator";
 import { prisma } from "./prisma.ts";
 import passport from "passport";
 import bcrypt from "bcryptjs";
 import type { NextFunction, Response, Request } from "express";
-import { log } from "console";
 
 type UserPayload = {
-  email: String,
-  password: String,
-}
+  email: String;
+  password: String;
+};
 
 const validateUserForm = [
   body("email")
@@ -59,12 +58,13 @@ passport.use(
 
       return void done(null, user);
     } catch (err) {
+      console.log("error" + err);
       return void done(null, false, { message: "Error in authorizing user" });
     }
   }),
 );
 
-const logOut = function(req: Request, res: Response, next: NextFunction) {
+const logOut = function (req: Request, res: Response, next: NextFunction) {
   req.logout((err) => {
     if (err) {
       return void next(err);
@@ -79,17 +79,18 @@ const logIn = async (req: Request, res: Response) => {
     password: req.body.password,
   };
 
-  const secretKey: string = process.env.SECRET as string
+  const secretKey: string = process.env.SECRET as string;
 
   jwt.sign(payload, secretKey, { expiresIn: "1h" }, (err, token) => {
     if (err) {
-      return void res.status(400).json({ error: err })
+      console.log("error" + err);
+      return void res.status(400).json({ error: err });
     } else {
-      return void res.status(200).json({ token, email: req.body.email })
+      return void res.status(200).json({ token, email: req.body.email });
     }
-  })
-  return
-}
+  });
+  return;
+};
 
 const signUp = async (req: Request, res: Response) => {
   try {
@@ -100,7 +101,7 @@ const signUp = async (req: Request, res: Response) => {
       res.status(400).json({
         errors: errors.array(),
       });
-      return
+      return;
     }
 
     const userExists = await prisma.user.findFirst({
@@ -118,17 +119,15 @@ const signUp = async (req: Request, res: Response) => {
         },
       });
       res.status(200).json("Registration Successful");
-      return
+      return;
     } else {
-      res
-        .status(400)
-        .json("Email is already associated with an account");
-      return
+      res.status(400).json("Email is already associated with an account");
+      return;
     }
   } catch (err) {
     res.status(500).json("Error in registering user");
-    return
+    return;
   }
-}
+};
 
 export { signUp, logOut, logIn, validateUserForm, passport };

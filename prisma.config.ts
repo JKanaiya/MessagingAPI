@@ -3,16 +3,15 @@
 import "dotenv/config";
 import { defineConfig, env } from "prisma/config";
 
-const connectionString = `${process.env.NODE_ENV === 'test'
-  ? "TEST_DATABASE_URL"
-  : "DATABASE_URL"
-  }`
+const connectionString = `${
+  process.env.NODE_ENV === "test" ? "TEST_DATABASE_URL" : "TEST_DATABASE_URL"
+}`;
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
-    seed: "tsx controllers/dbSetup.ts"
+    seed: "tsx controllers/dbSetup.ts",
   },
   datasource: {
     url: env(connectionString),

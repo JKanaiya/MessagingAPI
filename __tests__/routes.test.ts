@@ -4,77 +4,115 @@ import express from "express";
 import "dotenv/config.js";
 import cors from "cors";
 import indexRouter from "../routes/indexRouter.ts";
-import { log } from "console";
 
 const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 app.use(cors());
-app.use("/", indexRouter);
+app.use(indexRouter);
+app.use((req, res, next) => {
+  res.locals.user = req.user;
+  next();
+});
 
 describe("Auth testing", () => {
   it("works with a user that already exists", async () => {
     const loginRes = await request(app)
       .post("/log-in")
       .send({
-        email: "user1@fakemail.com",
-        password: "fakepassword1"
+        email: "user@fakemail.com",
+        password: "fakepassword1",
       })
-      .expect(200)
+      .expect(200);
 
-    expect(loginRes.body).toEqual(expect.objectContaining({ email: "user1@fakemail.com" }))
-  })
+    expect(loginRes.body).toEqual(
+      expect.objectContaining({ email: "user@fakemail.com" }),
+    );
+  });
 
   it("does not auth a user with an incorrect password", async () => {
-    const getToken = await request(app)
-      .post("/log-in")
-      .send({
-        email: "user1@fakemail.com",
-        password: "fakerpassword"
-      })
+    const getToken = await request(app).post("/log-in").send({
+      email: "user@fakemail.com",
+      password: "fakerpassword",
+    });
     const attemptAuth = await request(app)
       .post("/message")
       .send({
-        messageId: 20,
         token: getToken.body.token,
-        name: "user1",
+        name: "user",
         text: "Hi, this is a message",
-        chatroomId: 12
+        chatroomId: 12,
       })
-      .expect(401)
+      .expect(401);
 
-    expect(attemptAuth.text).toBe("Unauthorized")
-  })
-})
+    expect(attemptAuth.text).toBe("Unauthorized");
+  });
+});
 
 describe("Messages testing", () => {
+  let token: string;
+  let messageId: number;
   it("sends messages successfully", async () => {
     const loginRes = await request(app)
       .post("/log-in")
       .send({
-        email: "user1@fakemail.com",
-        password: "fakepassword1"
+        email: "user@fakemail.com",
+        password: "fakepassword1",
       })
-      .expect(200)
+      .expect(200);
 
-    expect(loginRes.body).toEqual(expect.objectContaining({ email: "user1@fakemail.com" }))
+    expect(loginRes.body).toEqual(
+      expect.objectContaining({ email: "user@fakemail.com" }),
+    );
 
-    log(loginRes.body)
+    token = loginRes.body.token;
 
     const res = await request(app)
       .post("/message")
+      .set(`Authorization`, `Bearer ${token}`)
+      .set("Accept", "application/json")
       .send({
-        token: loginRes.body.token,
-        messageId: 23,
-        name: "user1",
+        name: "user",
         text: "Hi, this is a message",
-        chatroomId: 12
+        chatroomId: 12,
       })
-    // .expect(200)
-    log(res)
+      .expect(200);
 
-    expect(res.body).toBe("Message was sent");
-  })
-})
+    expect(res.body.mess).toBe("Message was sent");
+    messageId = res.body.messId;
+  });
 
+  it("edits a message successfully", async () => {
+    const res = await request(app)
+      .patch("/message")
+      .set(`Authorization`, `Bearer ${token}`)
+      .set("Accept", "application/json")
+      .send({
+        name: "user",
+        text: "Hi, this is a new message",
+        chatroomId: 12,
+        timeSent: new Date().toISOString(),
+        messageId: messageId,
+      })
+      .expect(200);
+
+    expect(res.body.messUpdated).toBe(true);
+  });
+
+  it("does not allow editing if the message was sent > 30 mins ago", async () => {
+    const now = new Date();
+    let nowPlus30 = new Date(now.getTime() + 31 * 60 * 1000).toISOString();
+    await request(app)
+      .patch("/message")
+      .set(`Authorization`, `Bearer ${token}`)
+      .set("Accept", "application/json")
+      .send({
+        name: "user",
+        text: "Hi, this is a new message",
+        chatroomId: 12,
+        timeSent: nowPlus30,
+        messageId: messageId,
+      })
+      .expect(400);
+  });
+});

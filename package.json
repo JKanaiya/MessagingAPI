@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test vitest",
-    "dev": "NODE_ENV=development tsx app.ts",
-    "dbdev": "NODE_ENV=development tsx --inspect app.ts"
+    "dev": "NODE_ENV=development tsx --watch app.ts",
+    "dbdev": "NODE_ENV=development tsx --inspect --watch app.ts"
   },
   "keywords": [],
   "author": "",
@@ -19,18 +19,19 @@
     "bcryptjs": "^3.0.3",
     "body-parser": "^2.2.1",
     "cors": "^2.8.5",
-    "dotenv": "^16.6.1",
     "ejs": "^3.1.10",
     "express": "^5.2.1",
     "express-async-handler": "^1.2.0",
     "express-session": "^1.18.1",
     "express-validator": "^7.2.1",
     "jsonwebtoken": "^9.0.3",
+    "multer": "^2.3.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "pg": "^8.16.3",
-    "prisma": "^7.2.0"
+    "socket.io": "^4.8.3",
+    "supabase": "^2.117.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
@@ -42,7 +43,9 @@
     "@types/passport-jwt": "^4.0.1",
     "@types/pg": "^8.16.0",
     "@types/supertest": "^6.0.3",
+    "dotenv": "^16.6.1",
     "jest": "^30.2.0",
+    "prisma": "^7.10.0",
     "supertest": "^7.1.4",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
