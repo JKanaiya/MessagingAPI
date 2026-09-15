@@ -28,8 +28,4 @@
       enable = true;
     };
   };
-
-  # env.DATABASE_URL = "postgresql://postgres:postgres@localhost:5432/app";
-
-  # See full reference at https://devenv.sh/reference/options/
 }

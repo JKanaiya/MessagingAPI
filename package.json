@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "test": "NODE_ENV=test vitest",
     "dev": "NODE_ENV=development tsx --watch app.ts",
     "dbdev": "NODE_ENV=development tsx --inspect --watch app.ts"
@@ -15,6 +16,7 @@
   "dependencies": {
     "@prisma/adapter-pg": "^7.2.0",
     "@prisma/client": "^7.3.0",
+    "@supabase/supabase-js": "^2.116.0",
     "bcrypt-ts": "^8.0.0",
     "bcryptjs": "^3.0.3",
     "body-parser": "^2.2.1",

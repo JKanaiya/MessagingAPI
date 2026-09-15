@@ -45,7 +45,6 @@ passport.use(
           email: jwt_payload.email,
         },
       });
-
       if (!user) {
         return void done(null, false, { message: "No such user email exists" });
       }
