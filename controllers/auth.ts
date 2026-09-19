@@ -5,6 +5,7 @@ import { prisma } from "./prisma.ts";
 import passport from "passport";
 import bcrypt from "bcryptjs";
 import type { NextFunction, Response, Request } from "express";
+import { log } from "console";
 
 type UserPayload = {
   email: String;
@@ -80,7 +81,7 @@ const logIn = async (req: Request, res: Response) => {
 
   const secretKey: string = process.env.SECRET as string;
 
-  jwt.sign(payload, secretKey, { expiresIn: "1h" }, (err, token) => {
+  jwt.sign(payload, secretKey, { expiresIn: "3h" }, (err, token) => {
     if (err) {
       console.log("error" + err);
       return void res.status(400).json({ error: err });

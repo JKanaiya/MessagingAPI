@@ -32,11 +32,21 @@ io.engine.use((req: Request, res: Request, next: NextFunction) => {
 });
 
 io.on("connection", (socket) => {
-  socket.on("message", (message) => {
-    sendMessage(message.text, 88888888, socket.request.user);
+  socket.on("message", async (message) => {
+    const result = await sendMessage(
+      message.text,
+      message.chatroomId,
+      socket.request.user,
+    );
+    io.emit("receive-message", result.mess);
   });
   socket.on("edit-message", (message) => {
     editMessage(message.text, socket.request.user, message.id);
+  });
+
+  socket.on("join chat", (chat) => {
+    socket.join(chat);
+    socket.emit("joined chat", chat);
   });
 });
 

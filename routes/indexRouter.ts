@@ -40,6 +40,13 @@ const upload = multer({ storage: storage });
 //   editMessage,
 // );
 indexRouter.get("/chatrooms", getChatrooms);
+indexRouter.post(
+  "/auth-check",
+  passport.authenticate("jwt", { session: false }),
+  (req: Request, res: Response) => {
+    res.status(200).json("authed");
+  },
+);
 indexRouter.get("/log-out", logOut);
 indexRouter.post("/chatroom", createChatroom);
 indexRouter.post("/log-in", validateUserForm, logIn);

@@ -174,15 +174,21 @@ const getChatrooms = [
   async (req: Request, res: Response) => {
     try {
       const chatrooms = await prisma.chatroom.findMany({
+        where: {
+          userId: req.user?.id,
+        },
         include: {
           messages: {
-            where: {
-              userId: req.user?.id,
+            include: {
+              user: {
+                omit: {
+                  password: true,
+                },
+              },
             },
           },
         },
       });
-      console.log(chatrooms);
       res.status(200).json(chatrooms);
     } catch (e) {
       log(e);
