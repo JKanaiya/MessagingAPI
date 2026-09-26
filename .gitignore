@@ -21,3 +21,4 @@ devenv.local.yaml
 
 # bash 
 ./testCurl.sh
+testCurl.sh

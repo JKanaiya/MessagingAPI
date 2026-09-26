@@ -6,6 +6,7 @@ import {
   createChatroom,
   editMessage,
   getChatrooms,
+  setProfileImg,
 } from "../controllers/messageController.ts";
 import {
   logIn,
@@ -40,6 +41,7 @@ const upload = multer({ storage: storage });
 //   editMessage,
 // );
 indexRouter.get("/chatrooms", getChatrooms);
+indexRouter.post("/profile-image", setProfileImg);
 indexRouter.post(
   "/auth-check",
   passport.authenticate("jwt", { session: false }),

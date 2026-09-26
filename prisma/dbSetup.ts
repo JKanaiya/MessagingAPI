@@ -4,19 +4,25 @@ import { prisma } from "../controllers/prisma.ts";
 // TODO: Profile image url functionality
 const users = [
   {
+    id: 53,
     email: "bla1@fakemail.com",
     name: "bla1",
     password: "bla!password",
+    profileImageUrl: "",
   },
   {
+    id: 54,
     email: "bla2@fakemail.com",
     name: "bla2",
     password: "bla@password",
+    profileImageUrl: "",
   },
   {
-    email: "bla3#@fakemail.com",
+    id: 55,
+    email: "bla3@fakemail.com",
     name: "bla3",
     password: "bla#password",
+    profileImageUrl: "",
   },
 ];
 
@@ -49,6 +55,7 @@ async function main() {
           email: user.email,
           name: user.name,
           password: await bcrypt.hash(user.password, 10),
+          profileImageUrl: `${user.email}/image.png`,
         },
       }),
   );
@@ -71,8 +78,6 @@ async function main() {
     },
   });
 
-  console.log(user1, user2, user3);
-
   const chatroom1 = await prisma.chatroom.create({
     data: {
       userId: user1.id,
@@ -82,6 +87,28 @@ async function main() {
   const chatroom2 = await prisma.chatroom.create({
     data: {
       userId: user1.id,
+    },
+  });
+
+  const users1 = [user1, user2];
+  const users2 = [user1, user3];
+  await prisma.chatroom.update({
+    where: {
+      id: chatroom1.id,
+    },
+    data: {
+      users: {
+        set: [...users1],
+      },
+    },
+  });
+
+  await prisma.chatroom.update({
+    where: {
+      id: chatroom2.id,
+    },
+    data: {
+      users: { set: [...users2] },
     },
   });
 

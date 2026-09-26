@@ -1,17 +1,17 @@
  #!/bin/bash
- user=$(
-   curlie http://localhost:3000/sign-up -d '{
-   "email": "user2@fakemail.com",
-   "password": "fakepassword2",
-   "name": "name1"
-   }'
-  )
+ # user=$(
+ #   curlie http://localhost:3000/sign-up -d '{
+ #   "email": "bla2@fakemail.com",
+ #   "password": "",
+ #   "name": "name1"
+ #   }'
+ #  )
 
 tokenJson=$(
   curlie http://localhost:3000/log-in -d '{
-   "email": "user2@fakemail.com",
-   "password":"fakepassword2",
-   "name": "name1"
+   "email": "bla2@fakemail.com",
+   "password":"bla@password",
+   "name": "bla2"
    }'
 )
 
@@ -21,6 +21,9 @@ token=$(echo $tokenJson | jq -r ".token")
 
 check=$(curlie http://localhost:3000/auth-check -H "Authorization: Bearer $token" -X POST)
 echo $check
+
+chatrooms=$(curlie http://localhost:3000/chatrooms -H "Authorization: Bearer $token" -X GET)
+ echo $chatrooms
 
 # chatroom=$(curlie http://localhost:3000/chatroom -H "Authorization: Bearer $token" -X POST)
 #

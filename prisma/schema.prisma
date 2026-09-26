@@ -10,8 +10,9 @@ datasource db {
 model Chatroom {
   id       Int       @id @default(autoincrement())
   messages Message[]
-  owner    User      @relation(fields: [userId], references: [id])
+  // owner    User      @relation(fields: [userId], references: [id])
   userId   Int
+  users    User[]
   // banned   User[] @relation("bannedUsers", fields: [id])
 }
 

@@ -1,7 +1,7 @@
 import { type Request, type Response } from "express";
 import passport from "passport";
 import { prisma } from "./prisma.ts";
-import { log } from "console";
+import { log, profile } from "console";
 
 type User = {
   id: string;
@@ -175,7 +175,11 @@ const getChatrooms = [
     try {
       const chatrooms = await prisma.chatroom.findMany({
         where: {
-          userId: req.user?.id,
+          users: {
+            some: {
+              id: req.user?.id,
+            },
+          },
         },
         include: {
           messages: {
@@ -197,4 +201,30 @@ const getChatrooms = [
   },
 ];
 
-export { sendMessage, createChatroom, editMessage, getChatrooms };
+const setProfileImg = [
+  passport.authenticate("jwt", { session: false }),
+  async (req: Request, res: Response) => {
+    try {
+      const profileUpdated = await prisma.user.update({
+        where: {
+          id: req.user?.id,
+        },
+        data: {
+          profileImageUrl: req.body.piUrl,
+        },
+      });
+      res.status(200).json(profileUpdated);
+    } catch (e) {
+      log(e);
+      res.status(400).json(e);
+    }
+  },
+];
+
+export {
+  sendMessage,
+  createChatroom,
+  editMessage,
+  getChatrooms,
+  setProfileImg,
+};
