@@ -92,6 +92,7 @@ async function main() {
 
   const users1 = [user1, user2];
   const users2 = [user1, user3];
+
   await prisma.chatroom.update({
     where: {
       id: chatroom1.id,

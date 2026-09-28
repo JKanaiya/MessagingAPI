@@ -182,15 +182,21 @@ const getChatrooms = [
           },
         },
         include: {
-          messages: {
-            include: {
-              user: {
-                omit: {
-                  password: true,
-                },
-              },
+          users: {
+            omit: {
+              password: true,
             },
           },
+          messages: true,
+          // messages: {
+          //   include: {
+          //     user: {
+          //       omit: {
+          //         password: true,
+          //       },
+          //     },
+          //   },
+          // },
         },
       });
       res.status(200).json(chatrooms);
