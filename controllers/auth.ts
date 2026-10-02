@@ -111,13 +111,45 @@ const signUp = async (req: Request, res: Response) => {
     });
 
     if (!userExists) {
-      await prisma.user.create({
+      const user = await prisma.user.create({
         data: {
           name: req.body.name || req.body.email,
           email: req.body.email,
           password: hashedPassword,
+          spectator: req.body.spectator ? true : false,
         },
       });
+      console.log(req.body.spectator);
+      if (req.body.spectator) {
+        const chat1 = await prisma.chatroom.findFirst({
+          where: { id: 1 },
+          include: { users: true },
+        });
+
+        const chat2 = await prisma.chatroom.findFirst({
+          where: { id: 2 },
+          include: { users: true },
+        });
+
+        const res = await prisma.chatroom.update({
+          where: {
+            id: 1,
+          },
+          data: {
+            users: { set: [...chat1!.users, user] },
+          },
+        });
+
+        const res1 = await prisma.chatroom.update({
+          where: {
+            id: 2,
+          },
+          data: {
+            users: { set: [...chat2!.users, user] },
+          },
+        });
+        console.log(res, res1);
+      }
       res.status(200).json("Registration Successful");
       return;
     } else {
@@ -125,7 +157,7 @@ const signUp = async (req: Request, res: Response) => {
       return;
     }
   } catch (err) {
-    res.status(500).json("Error in registering user");
+    res.status(500).json({ "Error in registering user": err });
     return;
   }
 };

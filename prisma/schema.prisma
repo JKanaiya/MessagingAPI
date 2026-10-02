@@ -19,10 +19,11 @@ model Chatroom {
 model User {
   id              Int        @id @default(autoincrement())
   email           String     @unique
-  name            String     @unique
+  name            String
   password        String
   profileImageUrl String?
   messages        Message[]
+  spectator       Boolean    @default(false)
   chatrooms       Chatroom[]
 }
 

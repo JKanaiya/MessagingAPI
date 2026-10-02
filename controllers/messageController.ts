@@ -153,18 +153,27 @@ const editMessage = async (text: string, user: User, id: number) => {
 const createChatroom = [
   passport.authenticate("jwt", { session: false }),
   async (req: Request, res: Response) => {
-    try {
-      const chatroom = await prisma.chatroom.create({
-        data: {
-          userId: req.user?.id,
-        },
-      });
-      res
-        .status(200)
-        .json({ chat: "Chatroom was created", messId: chatroom.id });
-    } catch (e) {
-      log(e);
-      res.status(400).json(e);
+    const user2 = await prisma.user.findFirst({
+      where: {
+        email: req.body.user2Email,
+      },
+    });
+    if (user2) {
+      try {
+        const chatroom = await prisma.chatroom.create({
+          data: {
+            userId: req.user?.id,
+          },
+        });
+        res
+          .status(200)
+          .json({ chat: "Chatroom was created", messId: chatroom.id });
+      } catch (e) {
+        log(e);
+        res.status(400).json(e);
+      }
+    } else {
+      res.status(400).json({ message: "User does not exist" });
     }
   },
 ];
@@ -188,15 +197,6 @@ const getChatrooms = [
             },
           },
           messages: true,
-          // messages: {
-          //   include: {
-          //     user: {
-          //       omit: {
-          //         password: true,
-          //       },
-          //     },
-          //   },
-          // },
         },
       });
       res.status(200).json(chatrooms);
