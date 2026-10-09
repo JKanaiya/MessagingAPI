@@ -5,7 +5,6 @@ import { prisma } from "./prisma.ts";
 import passport from "passport";
 import bcrypt from "bcryptjs";
 import type { NextFunction, Response, Request } from "express";
-import { log } from "console";
 
 type UserPayload = {
   email: String;
@@ -40,6 +39,7 @@ const opts: any = {
 
 passport.use(
   new JwtStrategy(opts, async (jwt_payload, done) => {
+    // console.log(jwt_payload);
     try {
       const user = await prisma.user.findFirst({
         where: {
@@ -51,6 +51,15 @@ passport.use(
       }
 
       const match = await bcrypt.compare(jwt_payload.password, user.password);
+      // const equalEmail = jwt_payload.email === user.email;
+      // const equalPass = await bcrypt.compare(
+      //   jwt_payload.password,
+      //   user.password,
+      // );
+      // console.log("Ee: " + equalEmail);
+      // console.log("Ep: " + equalPass);
+      // const val = await bcrypt.hash(jwt_payload.password, 10);
+      // console.log(await bcrypt.compare(val, user.password));
 
       if (!match) {
         return void done(Error, user, { message: "Incorrect password" });
@@ -81,12 +90,17 @@ const logIn = async (req: Request, res: Response) => {
 
   const secretKey: string = process.env.SECRET as string;
 
-  jwt.sign(payload, secretKey, { expiresIn: "3h" }, (err, token) => {
+  jwt.sign(payload, secretKey, { expiresIn: "3h" }, async (err, token) => {
     if (err) {
       console.log("error" + err);
       return void res.status(400).json({ error: err });
     } else {
-      return void res.status(200).json({ token, email: req.body.email });
+      const user = await prisma.user.findFirst({
+        where: {
+          email: req.body.email,
+        },
+      });
+      return void res.status(200).json({ token, user: user });
     }
   });
   return;
@@ -119,7 +133,6 @@ const signUp = async (req: Request, res: Response) => {
           spectator: req.body.spectator ? true : false,
         },
       });
-      console.log(req.body.spectator);
       if (req.body.spectator) {
         const chat1 = await prisma.chatroom.findFirst({
           where: { id: 1 },

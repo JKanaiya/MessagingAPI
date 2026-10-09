@@ -44,7 +44,12 @@ io.on("connection", (socket) => {
     editMessage(message.text, socket.request.user, message.id);
   });
 
+  socket.on("user-added", (user) => {
+    socket.emit("new-user");
+  });
+
   socket.on("join chat", (chat) => {
+    console.log("boo");
     socket.join(chat);
     socket.emit("joined chat", chat);
   });

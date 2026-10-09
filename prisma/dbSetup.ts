@@ -8,21 +8,21 @@ const users = [
     email: "bla1@fakemail.com",
     name: "bla1",
     password: "bla!password",
-    profileImageUrl: "",
+    profileImageUrl: "2026-09-27T13:10:07.754Z",
   },
   {
     id: 54,
     email: "bla2@fakemail.com",
     name: "bla2",
     password: "bla@password",
-    profileImageUrl: "",
+    profileImageUrl: "2026-09-26T13:53:43.267Z",
   },
   {
     id: 55,
     email: "bla3@fakemail.com",
     name: "bla3",
     password: "bla#password",
-    profileImageUrl: "",
+    profileImageUrl: "image.png",
   },
 ];
 
@@ -55,38 +55,38 @@ async function main() {
           email: user.email,
           name: user.name,
           password: await bcrypt.hash(user.password, 10),
-          profileImageUrl: `${user.email}/image.png`,
+          profileImageUrl: user.profileImageUrl,
         },
       }),
   );
 
   const user1 = await prisma.user.findFirst({
     where: {
-      email: users[0].email,
+      email: users[0]!.email,
     },
   });
 
   const user2 = await prisma.user.findFirst({
     where: {
-      email: users[1].email,
+      email: users[1]!.email,
     },
   });
 
   const user3 = await prisma.user.findFirst({
     where: {
-      email: users[2].email,
+      email: users[2]!.email,
     },
   });
 
   const chatroom1 = await prisma.chatroom.create({
     data: {
-      userId: user1.id,
+      userId: user1!.id,
     },
   });
 
   const chatroom2 = await prisma.chatroom.create({
     data: {
-      userId: user1.id,
+      userId: user1!.id,
     },
   });
 

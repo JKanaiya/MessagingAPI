@@ -18,14 +18,23 @@ tokenJson=$(
 )
 #
 token=$(echo $tokenJson | jq -r ".token")
-#
+
 # # userId=$(echo $user | jq -r ".id")
 #
-# check=$(curlie http://localhost:3000/auth-check -H "Authorization: Bearer $token" -X POST)
+# check=$(curlie http://localhost:3000/auth-check -H "Authorization: Bearer $token" -X GET)
 # echo $check
 #
 chatrooms=$(curlie http://localhost:3000/chatrooms -H "Authorization: Bearer $token" -X GET)
- echo $chatrooms
+
+users=$(echo $chatrooms | jq -r ".users" | rg spec4_93 )
+ chatuser=$(echo $chatrooms | rg spec4_23)
+ # echo $chatrooms 
+ echo $users
+# users=$(echo $chatrooms | jq -r ".users")
+#  echo $users
+
+# chatroom=$(curlie http://localhost:3000/chatroom -H "Authorization: Bearer $token" -X POST -d '{"user2Email": "bla1@fakemail.com"}')
+#  echo $chatrooms
 
 # chatroom=$(curlie http://localhost:3000/chatroom -H "Authorization: Bearer $token" -X POST)
 #

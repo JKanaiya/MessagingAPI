@@ -163,17 +163,30 @@ const createChatroom = [
         const chatroom = await prisma.chatroom.create({
           data: {
             userId: req.user?.id,
+            users: { connect: [{ id: user2.id }, { id: req.user?.id }] },
           },
         });
         res
           .status(200)
-          .json({ chat: "Chatroom was created", messId: chatroom.id });
+          .json({ chat: "Chatroom was created", chatId: chatroom.id });
       } catch (e) {
         log(e);
         res.status(400).json(e);
       }
     } else {
       res.status(400).json({ message: "User does not exist" });
+    }
+  },
+];
+const getUsers = [
+  passport.authenticate("jwt", { session: false }),
+  async (req: Request, res: Response) => {
+    try {
+      const users = await prisma.user.findMany();
+      res.status(200).json(users);
+    } catch (e) {
+      log(e);
+      res.status(400).json(e);
     }
   },
 ];
@@ -232,5 +245,6 @@ export {
   createChatroom,
   editMessage,
   getChatrooms,
+  getUsers,
   setProfileImg,
 };
