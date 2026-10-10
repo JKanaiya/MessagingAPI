@@ -8,6 +8,7 @@ import {
   getChatrooms,
   setProfileImg,
   getUsers,
+  updateUserName,
 } from "../controllers/messageController.ts";
 import {
   logIn,
@@ -61,5 +62,6 @@ indexRouter.post(
   upload.single("uploaded_file"),
   handleUpload,
 );
+indexRouter.patch("/name", updateUserName);
 
 export default indexRouter;

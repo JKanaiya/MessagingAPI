@@ -184,6 +184,7 @@ const getUsers = [
     try {
       const users = await prisma.user.findMany();
       res.status(200).json(users);
+      console.log(users);
     } catch (e) {
       log(e);
       res.status(400).json(e);
@@ -220,6 +221,26 @@ const getChatrooms = [
   },
 ];
 
+const updateUserName = [
+  passport.authenticate("jwt", { session: false }),
+  async (req: Request, res: Response) => {
+    try {
+      const nameUpdated = await prisma.user.update({
+        where: {
+          id: req.user?.id,
+        },
+        data: {
+          name: req.body.newName,
+        },
+      });
+      res.status(200).json(nameUpdated);
+    } catch (e) {
+      log(e);
+      res.status(400).json(e);
+    }
+  },
+];
+
 const setProfileImg = [
   passport.authenticate("jwt", { session: false }),
   async (req: Request, res: Response) => {
@@ -247,4 +268,5 @@ export {
   getChatrooms,
   getUsers,
   setProfileImg,
+  updateUserName,
 };

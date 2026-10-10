@@ -49,7 +49,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("join chat", (chat) => {
-    console.log("boo");
     socket.join(chat);
     socket.emit("joined chat", chat);
   });
