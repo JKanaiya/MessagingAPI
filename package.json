@@ -8,7 +8,8 @@
     "test": "NODE_ENV=test vitest",
     "dev": "NODE_ENV=development tsx --watch app.ts",
     "dbdev": "NODE_ENV=development tsx --inspect --watch app.ts",
-    "start": "node app.ts",
+    "start": "node dist/index.js",
+    "build": "tsc",
     "postinstall": "prisma generate"
   },
   "keywords": [],
