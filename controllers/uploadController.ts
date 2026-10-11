@@ -24,7 +24,7 @@ const handleUpload = async (req: Request, res: Response) => {
         id: req.user.id,
       },
       data: {
-        url: filePath,
+        profileImageUrl: filePath,
       },
     });
   } catch (err) {

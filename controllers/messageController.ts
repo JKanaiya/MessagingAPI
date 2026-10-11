@@ -141,7 +141,6 @@ const editMessage = async (text: string, user: User, id: number) => {
       } catch (e) {
         console.log(e);
         return { messUpdated: false };
-        res.status(400).json(e);
       }
     } else {
       // res.status(400).json({ mess: "Message is too old to be updated.", messUpdated: false });

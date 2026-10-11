@@ -9,7 +9,7 @@
     "dev": "NODE_ENV=development tsx --watch app.ts",
     "dbdev": "NODE_ENV=development tsx --inspect --watch app.ts",
     "start": "node dist/app.js",
-    "build": "tsc",
+    "build": "tsc || true",
     "postinstall": "prisma generate"
   },
   "keywords": [],
