@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "rootDir": ".",
+    "rootDir": "./",
     "resolveJsonModule": true,
     "outDir": "./dist",
     "module": "NodeNext",
