@@ -4,3 +4,5 @@ allowBuilds:
   esbuild: false
   prisma: false
   unrs-resolver: false
+packages:
+  - "."

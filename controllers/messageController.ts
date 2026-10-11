@@ -184,7 +184,6 @@ const getUsers = [
     try {
       const users = await prisma.user.findMany();
       res.status(200).json(users);
-      console.log(users);
     } catch (e) {
       log(e);
       res.status(400).json(e);
