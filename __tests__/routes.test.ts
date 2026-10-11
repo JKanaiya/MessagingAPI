@@ -3,7 +3,7 @@ import request from "supertest";
 import express from "express";
 import "dotenv/config.js";
 import cors from "cors";
-import indexRouter from "../routes/indexRouter.ts";
+import indexRouter from "../routes/indexRouter.js";
 
 const app = express();
 

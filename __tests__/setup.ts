@@ -2,7 +2,7 @@ import { beforeAll, afterAll } from "vitest";
 import bcrypt from "bcryptjs";
 import "dotenv/config";
 import supertest, { type SuperTest, Test } from "supertest";
-import { prisma } from "../controllers/prisma.ts";
+import { prisma } from "../controllers/prisma.js";
 
 let request: SuperTest<Test>;
 

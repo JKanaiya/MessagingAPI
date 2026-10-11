@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
 import { body, validationResult } from "express-validator";
-import { prisma } from "./prisma.ts";
+import { prisma } from "./prisma.js";
 import passport from "passport";
 import bcrypt from "bcryptjs";
 import type { NextFunction, Response, Request } from "express";

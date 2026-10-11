@@ -1,6 +1,6 @@
 import { type Request, type Response } from "express";
 import passport from "passport";
-import { prisma } from "./prisma.ts";
+import { prisma } from "./prisma.js";
 import { log, profile } from "console";
 
 type User = {

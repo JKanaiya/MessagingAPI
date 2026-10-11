@@ -4,8 +4,8 @@ import { Server } from "socket.io";
 import { createServer } from "http";
 import "dotenv/config.js";
 import cors from "cors";
-import indexRouter from "./routes/indexRouter.ts";
-import { editMessage, sendMessage } from "./controllers/messageController.ts";
+import indexRouter from "./routes/indexRouter.js";
+import { editMessage, sendMessage } from "./controllers/messageController.js";
 
 const app = express();
 app.use(express.json());

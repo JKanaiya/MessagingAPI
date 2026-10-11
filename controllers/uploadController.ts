@@ -1,6 +1,6 @@
 import { type Request, type Response } from "express";
-import { prisma } from "./prisma.ts";
-import supabase from "./supabaseController.ts";
+import { prisma } from "./prisma.js";
+import supabase from "./supabaseController.js";
 
 const handleUpload = async (req: Request, res: Response) => {
   try {

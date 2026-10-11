@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { prisma } from "../controllers/prisma.ts";
+import { prisma } from "../controllers/prisma.js";
 
 // TODO: Profile image url functionality
 const users = [

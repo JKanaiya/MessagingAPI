@@ -6,7 +6,8 @@
     "module": "NodeNext",
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "NodeNext",
-    "allowImportingTsExtensions": true,
+    // "allowImportingTsExtensions": true,
+    "declaration": false,
     "target": "ESNext",
     "types": [],
     "lib": [

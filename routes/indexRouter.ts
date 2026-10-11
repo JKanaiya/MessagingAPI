@@ -9,16 +9,16 @@ import {
   setProfileImg,
   getUsers,
   updateUserName,
-} from "../controllers/messageController.ts";
+} from "../controllers/messageController.js";
 import {
   logIn,
   signUp,
   logOut,
   validateUserForm,
   passport,
-} from "../controllers/auth.ts";
+} from "../controllers/auth.js";
 
-import { handleUpload } from "../controllers/uploadController.ts";
+import { handleUpload } from "../controllers/uploadController.js";
 
 const indexRouter = express.Router();
 
