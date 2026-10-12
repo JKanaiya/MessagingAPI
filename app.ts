@@ -90,6 +90,9 @@ httpServer.listen(PORT, () => {
   console.log(`Express listening on PORT: ${PORT}`);
 });
 
+process.on("uncaughtException", (err) => {
+  console.error("uncaughtException:", err);
+});
 process.on("SIGTERM", () => {
   console.log("SIGTERM received, closing server...");
   io.close(() => {
