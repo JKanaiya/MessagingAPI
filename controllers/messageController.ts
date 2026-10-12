@@ -211,6 +211,14 @@ const getChatrooms = [
           messages: true,
         },
       });
+      console.log(
+        "chatrooms result:",
+        chatrooms.map((c) => ({
+          id: c.id,
+          userCount: c.users.length,
+          msgCount: c.messages.length,
+        })),
+      );
       res.status(200).json(chatrooms);
     } catch (e) {
       log(e);
