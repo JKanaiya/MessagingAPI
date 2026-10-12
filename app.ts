@@ -23,16 +23,32 @@ const io = new Server(httpServer, {
       "http://localhost:5174",
       "https://odinmessagingapp.netlify.app",
     ],
+    credentials: true,
   },
 });
 
-io.engine.use((req: Request, res: Request, next: NextFunction) => {
-  const isHandshake = req._query.sid === undefined;
-  if (isHandshake) {
-    passport.authenticate("jwt", { session: false })(req, res, next);
-  } else {
-    next();
-  }
+// io.engine.use((req: Request, res: Request, next: NextFunction) => {
+//   const isHandshake = req._query.sid === undefined;
+//   if (isHandshake) {
+//     passport.authenticate("jwt", { session: false })(req, res, next);
+//   } else {
+//     next();
+//   }
+// });
+// Replace io.engine.use with io.use
+io.use((socket, next) => {
+  passport.authenticate("jwt", { session: false })(
+    socket.request,
+    socket.request.res || {},
+    (err: any, user: any) => {
+      if (err || !user) {
+        return next(new Error("Authentication error"));
+      }
+      // Attach user to the socket request for later use
+      socket.request.user = user;
+      next();
+    },
+  );
 });
 
 io.on("connection", (socket) => {
@@ -58,7 +74,7 @@ io.on("connection", (socket) => {
   });
 });
 
-const PORT = process.env.HOST || 3000;
+const PORT = process.env.PORT || 3000;
 httpServer.listen(PORT, () => {
-  `Express listening on PORT: ${PORT}`;
+  console.log(`Express listening on PORT: ${PORT}`);
 });
