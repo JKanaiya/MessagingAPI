@@ -47,19 +47,11 @@ passport.use(
         },
       });
       if (!user) {
+        console.log("JWT verify: user not found");
         return void done(null, false, { message: "No such user email exists" });
       }
 
       const match = await bcrypt.compare(jwt_payload.password, user.password);
-      // const equalEmail = jwt_payload.email === user.email;
-      // const equalPass = await bcrypt.compare(
-      //   jwt_payload.password,
-      //   user.password,
-      // );
-      // console.log("Ee: " + equalEmail);
-      // console.log("Ep: " + equalPass);
-      // const val = await bcrypt.hash(jwt_payload.password, 10);
-      // console.log(await bcrypt.compare(val, user.password));
 
       if (!match) {
         return void done(Error, user, { message: "Incorrect password" });

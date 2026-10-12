@@ -10,11 +10,12 @@ import { editMessage, sendMessage } from "./controllers/messageController.js";
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use(indexRouter);
+app.use(passport.initialize());
 app.use((req, res, next) => {
   res.locals.user = req.user;
   next();
 });
+app.use(indexRouter);
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
@@ -26,30 +27,29 @@ const io = new Server(httpServer, {
     credentials: true,
   },
 });
-
-io.engine.use((req: Request, res: Request, next: NextFunction) => {
-  const isHandshake = req._query.sid === undefined;
-  if (isHandshake) {
-    passport.authenticate("jwt", { session: false })(req, res, next);
-  } else {
-    next();
-  }
-});
-// Replace io.engine.use with io.use
-// io.use((socket, next) => {
-//   passport.authenticate("jwt", { session: false })(
-//     socket.request,
-//     socket.request.res || {},
-//     (err: any, user: any) => {
-//       if (err || !user) {
-//         return next(new Error("Authentication error"));
-//       }
-//       // Attach user to the socket request for later use
-//       socket.request.user = user;
-//       next();
-//     },
-//   );
+//
+// io.engine.use((req: Request, res: Request, next: NextFunction) => {
+//   const isHandshake = req._query.sid === undefined;
+//   if (isHandshake) {
+//     passport.authenticate("jwt", { session: false })(req, res, next);
+//   } else {
+//     next();
+//   }
 // });
+io.use((socket, next) => {
+  passport.authenticate("jwt", { session: false })(
+    socket.request,
+    socket.request.res || {},
+    (err: any, user: any) => {
+      if (err || !user) {
+        return next(new Error("Authentication error"));
+      }
+      // Attach user to the socket request for later use
+      socket.request.user = user;
+      next();
+    },
+  );
+});
 
 io.on("connection", (socket) => {
   socket.on("message", async (message) => {
@@ -60,8 +60,8 @@ io.on("connection", (socket) => {
     );
     io.emit("receive-message", result.mess);
   });
-  socket.on("edit-message", (message) => {
-    editMessage(message.text, socket.request.user, message.id);
+  socket.on("edit-message", async (message) => {
+    await editMessage(message.text, socket.request.user, message.id);
   });
 
   socket.on("user-added", (user) => {
@@ -88,4 +88,14 @@ io.on("connection", (socket) => {
 const PORT = process.env.PORT || 3000;
 httpServer.listen(PORT, () => {
   console.log(`Express listening on PORT: ${PORT}`);
+});
+
+process.on("SIGTERM", () => {
+  console.log("SIGTERM received, closing server...");
+  io.close(() => {
+    httpServer.close(() => {
+      console.log("Server closed");
+      process.exit(0);
+    });
+  });
 });
