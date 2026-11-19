@@ -39,18 +39,20 @@ const opts: any = {
 
 passport.use(
   new JwtStrategy(opts, async (jwt_payload, done) => {
-    // console.log(jwt_payload);
     try {
+      console.log(jwt_payload);
       const user = await prisma.user.findFirst({
         where: {
           email: jwt_payload.email,
         },
       });
+      console.log(user);
       if (!user) {
         return void done(null, false, { message: "No such user email exists" });
       }
 
       const match = await bcrypt.compare(jwt_payload.password, user.password);
+      console.log(match);
       // const equalEmail = jwt_payload.email === user.email;
       // const equalPass = await bcrypt.compare(
       //   jwt_payload.password,

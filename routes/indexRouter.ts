@@ -30,18 +30,6 @@ const setUser = (req: Request, res: Response, next: NextFunction) => {
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-// indexRouter.post(
-//   "/message",
-//   passport.authenticate("jwt", { session: false }),
-//   setUser,
-//   sendMessage,
-// );
-// indexRouter.patch(
-//   "/message",
-//   passport.authenticate("jwt", { session: false }),
-//   setUser,
-//   editMessage,
-// );
 indexRouter.get("/chatrooms", getChatrooms);
 indexRouter.post("/profile-image", setProfileImg);
 indexRouter.get(
@@ -56,12 +44,6 @@ indexRouter.get("/users", getUsers);
 indexRouter.post("/chatroom", createChatroom);
 indexRouter.post("/log-in", validateUserForm, logIn);
 indexRouter.post("/sign-up", signUp);
-indexRouter.post(
-  "/profile-image",
-  passport.authenticate("jwt", { session: false }),
-  upload.single("uploaded_file"),
-  handleUpload,
-);
 indexRouter.patch("/name", updateUserName);
 
 export default indexRouter;
