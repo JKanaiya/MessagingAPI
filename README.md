@@ -18,7 +18,7 @@ pnpm i
 ```
 3. Create and configure .env
 ```bash
-echo "DATABASE_URL=<your_database_url>\nSECRET=<your_secret>\nAPI_KEY=<supabase_api_key>>> .env
+echo "DATABASE_URL=<your_database_url>\nSECRET=<your_secret>\nAPI_KEY=<supabase_api_key>">> .env
 
 ```
 4. Run the development server
