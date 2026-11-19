@@ -4,7 +4,7 @@ import "dotenv/config";
 import { defineConfig, env } from "prisma/config";
 
 const connectionString = `${
-  process.env.NODE_ENV === "test" ? "TEST_DATABASE_URL" : "TEST_DATABASE_URL"
+  process.env.NODE_ENV === "test" ? "TEST_DATABASE_URL" : "DATABASE_URL"
 }`;
 
 export default defineConfig({
